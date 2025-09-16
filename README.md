@@ -6,5 +6,5 @@ Created by:
 Colin Haskins,
 Shamitha John,
 Aspen Steele,
-Aashna Suthar,
+Aashna Suthar
 
