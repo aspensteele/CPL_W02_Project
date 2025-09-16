@@ -3,6 +3,8 @@ This project is a course assignment for CS4308: Concepts of Programming Language
 
 
 Created by: 
-Shamitha John
-Aspen Steele
-Aashna Suthar
+Colin Haskins,
+Shamitha John,
+Aspen Steele,
+Aashna Suthar,
+
