@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
 import json
 import sys
+import re
+
 
 def read_source_file(filename):
     try:
@@ -20,8 +23,14 @@ class Scanner:
         print("Scanner created! Source length:", len(self.source))
 
     def tokenize(self):
-        # placeholder: right now just split by spaces
-        tokens = self.source.split()
+        # Step 1: only grab integers for now
+        pattern = r'\d+' #\d means digit 0-9 and + means one or more digits in a row
+        matches = re.findall(pattern, self.source)
+
+        tokens = []
+        for m in matches:
+            tokens.append({"type": "INTEGER", "value": m})
+
         print("Tokens:", tokens)
         return tokens
 
@@ -33,6 +42,14 @@ if __name__ == "__main__":
         content = read_source_file(filename)
         if content:  # only if file successfully read
             scanner = Scanner(content)
-            scanner.tokenize()
+            tokens = scanner.tokenize()
+
+            # Create JSON filename from input
+            json_filename = filename.rsplit(".", 1)[0] + "_tokens.json"
+
+            with open(json_filename, "w") as f:
+                json.dump(tokens, f, indent=2)
+
+            print(f"\nTokens saved to {json_filename}")
     else:
         print("Usage: python scl_scanner.py <filename>")
