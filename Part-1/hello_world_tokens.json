@@ -1,34 +1,94 @@
 [
   {
-    "type": "INTEGER",
-    "value": "10"
+    "type": "OPERATOR",
+    "value": "/"
   },
   {
-    "type": "INTEGER",
-    "value": "5"
+    "type": "OPERATOR",
+    "value": "/"
   },
   {
-    "type": "INTEGER",
-    "value": "0"
+    "type": "IDENTIFIER",
+    "value": "SCL"
   },
   {
-    "type": "INTEGER",
-    "value": "3"
+    "type": "IDENTIFIER",
+    "value": "Test"
   },
   {
-    "type": "INTEGER",
-    "value": "1"
+    "type": "IDENTIFIER",
+    "value": "Program"
   },
   {
-    "type": "INTEGER",
-    "value": "2"
+    "type": "OPERATOR",
+    "value": "/"
   },
   {
-    "type": "INTEGER",
-    "value": "1"
+    "type": "OPERATOR",
+    "value": "/"
   },
   {
-    "type": "INTEGER",
-    "value": "2"
+    "type": "IDENTIFIER",
+    "value": "This"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "program"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "demonstrates"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "the"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "SCL"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "language"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "subset"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "+"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
   }
 ]

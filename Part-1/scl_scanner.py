@@ -18,18 +18,31 @@ def read_source_file(filename):
 
 
 class Scanner:
+    KEYWORDS = {"if", "else", "while", "int"}
+    OPERATORS = {"+", "-", "*", "/", "=", "<", ">", "=="}
+    PUNCTUATION = {";","(", ")", "{", "}"}
+
     def __init__(self, source_text):
         self.source = source_text
         print("Scanner created! Source length:", len(self.source))
 
     def tokenize(self):
-        # Step 1: only grab integers for now
-        pattern = r'\d+' #\d means digit 0-9 and + means one or more digits in a row
+        # Combined pattern for integers and identifiers
+        pattern = r'==|[+\-*/=<>]|\d+|\b[a-zA-Z_]\w*\b|[;(){}]'
         matches = re.findall(pattern, self.source)
 
         tokens = []
         for m in matches:
-            tokens.append({"type": "INTEGER", "value": m})
+            if m.isdigit():
+                tokens.append({"type": "INTEGER", "value": m})
+            elif m in self.KEYWORDS:
+                tokens.append({"type": "KEYWORD", "value": m})
+            elif m in self.OPERATORS:
+                tokens.append({"type": "OPERATOR", "value": m})
+            elif m in self.PUNCTUATION:
+                tokens.append({"type": "PUNCTUATION", "value": m})
+            else:
+                tokens.append({"type": "IDENTIFIER", "value": m})
 
         print("Tokens:", tokens)
         return tokens

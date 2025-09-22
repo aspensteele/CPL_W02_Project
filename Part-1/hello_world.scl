@@ -4,34 +4,5 @@
 
 int x;
 int y;
-int result;
-int counter;
 
-// Initialize variables
-x = 10;
-y = 5;
-counter = 0;
-
-// Test conditional statements
-if (x > y) {
-    result = x + y;
-} else {
-    result = x - y;
-}
-
-// Test while loop
-while (counter < 3) {
-    if (counter == 1) {
-        result = result * 2;
-    }
-    counter = counter + 1;
-}
-
-/* Block comment test
-   Multiple lines
-   All operators: + - * / = < > == <= >= !=
-   All punctuation: ; , ( ) { }
-*/
-
-// Final assignment
-result = result / 2;
+x + y
