@@ -1,0 +1,70 @@
+Plan
+
+1. Plan the Tokens
+
+Keywords → if, else, while, int
+Operators → +, -, *, /, =, <, >, ==, !=, etc.
+Identifiers → variable names (x, counter)
+Constants → numbers like 42
+Symbols → ( ) { } ; ,
+
+2. Read the Source Code
+
+Open the .scl file.
+Store the whole code as a string so you can move through it one character at a time.
+
+3. Create a Scanner Class
+
+Holds the source code.
+Keeps track of:
+
+current index (where you are in the string)
+line number
+tokens (list of results)
+lists like keywords and identifiers.
+
+4. Build Helper Functions
+
+advance() → moves forward and returns the current character.
+peek() → looks ahead without moving.
+add_token(type, value) → saves the token in a list.
+
+
+5. Write Token Rules
+
+For each character you read:
+Whitespace? skip it.
+Newline? increase line.
+Digit? collect all following digits → make an INTEGER.
+Letter or _? collect until not alphanumeric → check if keyword or identifier.
+Two-char operators? look ahead with peek(), e.g. ==, !=.
+Single-char symbols? match in a dictionary.
+Else? → mark as ERROR.
+
+6. Loop Through the Source
+
+Keep calling scan_token() until you reach the end.
+At the end, add an EOF token.
+
+2. IDENTIFIER  'x'  (Line 1)
+3. ASSIGN      '='  (Line 1)
+4. INTEGER     '42' (Line 1)
+
+Save them to a JSON file.
+
+8. Test With Example Programs
+
+Make small .scl files to test:
+
+int x = 42;
+if (x > 10) {
+  x = x - 1;
+}
+
+Run scanner → check if the tokens look right.
+Also test error cases ($ or int 123bad).
+
+9. Polish
+
+Add helpful error messages (line numbers, unexpected tokens).
+Make a short demo video showing how scanner works.
