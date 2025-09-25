@@ -1,0 +1,5 @@
+// this is a loop test
+int counter = 0;
+while (counter < 10) {
+    counter = counter + 1; // increment
+}

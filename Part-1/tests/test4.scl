@@ -1,0 +1,2 @@
+integer = 5;  // "integer" should NOT be a keyword, just identifier
+elsewhere = 9;

@@ -1,0 +1,82 @@
+[
+  {
+    "type": "IDENTIFIER",
+    "value": "a"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "10"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "+"
+  },
+  {
+    "type": "INTEGER",
+    "value": "20"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "-"
+  },
+  {
+    "type": "INTEGER",
+    "value": "5"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "*"
+  },
+  {
+    "type": "INTEGER",
+    "value": "2"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "/"
+  },
+  {
+    "type": "INTEGER",
+    "value": "1"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "b"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "("
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "a"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "=="
+  },
+  {
+    "type": "INTEGER",
+    "value": "25"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ")"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  }
+]

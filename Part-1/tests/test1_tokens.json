@@ -1,0 +1,118 @@
+[
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "5"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "if"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "("
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "OPERATOR",
+    "value": ">"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ")"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "{"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "}"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "else"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "{"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "0"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "}"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "counter"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "0"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "while"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "("
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "counter"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "<"
+  },
+  {
+    "type": "INTEGER",
+    "value": "10"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ")"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "{"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "counter"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "counter"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "+"
+  },
+  {
+    "type": "INTEGER",
+    "value": "1"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": "}"
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "type": "IDENTIFIER",
+    "value": "integer"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "5"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "elsewhere"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "="
+  },
+  {
+    "type": "INTEGER",
+    "value": "9"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  }
+]
