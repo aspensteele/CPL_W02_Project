@@ -3,6 +3,20 @@ import json
 import sys
 import re
 
+"""
+TODO:
+ - // needs to be detected as a comment
+ - pretty terminal output
+ - test for edge cases
+ - whitespace handling (while preserving position tracking)
+ - more specific exception handling 
+    - FileNotFoundError
+    - PermissionError
+    - UnicodeDecodeError
+
+
+"""
+
 
 def read_source_file(filename):
     try:
