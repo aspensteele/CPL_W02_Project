@@ -1,0 +1,1 @@
+This will be a folder that contains photos of testing with edges cases, normal tests, etc. 
