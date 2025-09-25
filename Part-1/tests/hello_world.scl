@@ -1,0 +1,8 @@
+
+// SCL Test Program
+// This program demonstrates the SCL language subset
+
+int x;
+int y;
+
+x + y

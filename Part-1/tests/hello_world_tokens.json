@@ -1,0 +1,38 @@
+[
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  },
+  {
+    "type": "PUNCTUATION",
+    "value": ";"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "OPERATOR",
+    "value": "+"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y"
+  }
+]
