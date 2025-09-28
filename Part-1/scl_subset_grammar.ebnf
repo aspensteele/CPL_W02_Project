@@ -1,0 +1,71 @@
+/*
+   Subset Grammar for SCL
+
+   This file defines the simplified grammar subset of SCL used for
+   our scanner implementation. The subset supports declarations,
+   assignments, if/else statements, while loops, and expressions.
+*/
+
+Program       = { Statement } ;
+
+Statement     = Declaration
+              | Assignment
+              | IfStatement
+              | WhileStatement
+              ;
+
+Declaration   = "int" Identifier ";"
+              | "int" Identifier "=" Expression ";"
+              ;
+
+Assignment    = Identifier "=" Expression ";" ;
+
+IfStatement   = "if" "(" Condition ")" Block [ "else" Block ] ;
+
+WhileStatement= "while" "(" Condition ")" Block ;
+
+Block         = "{" { Statement } "}" ;
+
+Condition     = Expression RelOp Expression ;
+
+RelOp         = "<" | ">" | "==" ;
+
+Expression    = Term { ("+" | "-") Term } ;
+
+Term          = Factor { ("*" | "/") Factor } ;
+
+Factor        = Identifier
+              | Constant
+              | "(" Expression ")"
+              ;
+
+Identifier    = Letter { Letter | Digit | "_" } ;
+
+Constant      = Digit { Digit } ;
+
+Letter        = "A" … "Z" | "a" … "z" ;
+
+Digit         = "0" … "9" ;
+
+/*
+   Examples this grammar allows:
+
+   Declarations:
+   int x;
+   int y = 5;
+
+   Assignments:
+   x = y + 3;
+
+   If/Else:
+   if (x > 0) {
+       y = y - 1;
+   } else {
+       y = y + 1;
+   }
+
+   While Loops:
+   while (x < 10) {
+       x = x + 1;
+   }
+*/
