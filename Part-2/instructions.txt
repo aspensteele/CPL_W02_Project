@@ -76,3 +76,17 @@ Include the following in your report:
 
 Your output format should resemble the example provided in
 the project guidelines.
+
+===========================================================
+
+Hints on the 2nd deliverable:
+
+The scanner reads an SCL file and generates a JSON file of tokens.
+Input: SCL file
+output: JSON file
+The parser reads the JSON file and generates a parse-tree.
+input: JSON file
+output: parse-tree
+The executor reads the parse-tree and generates new code based on the tree.
+input: parse-tree
+output: executable code
