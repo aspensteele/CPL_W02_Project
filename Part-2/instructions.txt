@@ -1,1 +1,20 @@
 
+Module 5 – 2nd Deliverable
+
+Develop a complete parser program for a subset of the SCL language, which will work in conjunction with the scanner program developed in the previous deliverable. The report should include a description of the work performed, the parser source code, input, and output files.
+
+The purpose of this deliverable is to demonstrate understanding of the parsing process of compilation by creating a parser program based on a subset of the SCL language, written in BNF. It is important to note that you may create your own SCL language for this task.
+
+The solution includes two main programs, the scanner program (Scanner.cpp) and the parser program (Parser.cpp), which perform the necessary compilation steps on the input files. The parser program initializes the scanner with the input file string, which is necessary for obtaining the tokens and lexemes in the input file.
+
+To demonstrate the functionality of the parser program, the report should include relevant input files and corresponding output files, showing the statements recognized by the parser program.
+
+There are three (3) public functions in this class: getNextToken(), identifierExists(string identifier), and begin().
+
+The getNextToken() function returns the next token that is not a comment. This function allows the parser to fully ignore comments.
+
+The identifierExists(string identifier) function returns true if an identifier has already been declared. This function helps to ensure that variables are not declared multiple times and that variables being called in an action have been defined.
+
+The begin() function calls upon the private start() function, which is the first nonterminal in the grammar subset. All functions following start() in the parser are based on the format of the grammar subset. However, in some instances, case-related methods were found for showing syntax outcome, and the grammar subset was adapted to better represent what is happening in the code. These functions are all private and should never be called outside of the class since they are only useful if begin() is at start.
+
+Please note that the code for both the scanner (Scanner.cpp) and the parser (Parser.cpp) should be included in the report file.
