@@ -1,0 +1,92 @@
+======================================================
+             MODULE 5 – 2ND DELIVERABLE
+======================================================
+
+Develop a complete parser program for a subset of the SCL language,
+which will work in conjunction with the scanner program developed in
+the previous deliverable.
+
+------------------------------------------------------
+OBJECTIVE
+------------------------------------------------------
+• Demonstrate understanding of the parsing process in compilation.
+• Create a parser program based on a subset of the SCL language 
+  written in BNF.
+• You may define your own SCL language for this task.
+
+------------------------------------------------------
+DELIVERABLE REQUIREMENTS
+------------------------------------------------------
+Your report should include:
+• Description of the work performed.
+• Parser source code.
+• Input and output files.
+
+The report should also:
+• Demonstrate execution of the parser using appropriate input files.
+• Display statements recognized by the parser program.
+
+------------------------------------------------------
+MAIN COMPONENTS
+------------------------------------------------------
+The solution includes two main programs:
+
+1. Scanner Program – Scanner.cpp
+   • Performs lexical analysis and generates tokens and lexemes.
+
+2. Parser Program – Parser.cpp
+   • Performs parsing and applies grammar rules.
+   • Initializes the scanner with the input file string to obtain
+     tokens and lexemes.
+
+------------------------------------------------------
+PUBLIC FUNCTIONS IN THE PARSER CLASS
+------------------------------------------------------
+There are three (3) public functions:
+
+1. getNextToken()
+   • Returns the next token that is not a comment.
+   • Ensures the parser ignores all comments.
+
+2. identifierExists(string identifier)
+   • Returns TRUE if an identifier has already been declared.
+   • Prevents:
+       - Duplicate variable declarations.
+       - Use of undefined variables.
+
+3. begin()
+   • Calls the private start() function (the first nonterminal
+     in the grammar subset).
+   • Acts as the entry point for parsing.
+   • Notes:
+       - All functions following start() are based on the grammar
+         subset format.
+       - Additional methods may be added for syntax verification.
+       - All functions are private and should never be called
+         outside the class (only through begin()).
+
+------------------------------------------------------
+CODE AND OUTPUT REQUIREMENTS
+------------------------------------------------------
+Include the following in your report:
+• Source code for both Scanner.cpp and Parser.cpp.
+• Example input and output files demonstrating:
+    - Correct parsing behavior.
+    - Recognized statements.
+
+Your output format should resemble the example provided in
+the project guidelines.
+
+===========================================================
+
+Hints on the 2nd deliverable:
+
+The scanner reads an SCL file and generates a JSON file of tokens.
+Input: SCL file
+output: JSON file
+The parser reads the JSON file and generates a parse-tree.
+input: JSON file
+output: parse-tree
+The executor reads the parse-tree and generates new code based on the tree.
+input: parse-tree
+output: executable code
