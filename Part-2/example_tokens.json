@@ -1,0 +1,18 @@
+[
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  },
+  {
+    "type": "KEYWORD",
+    "value": "int"
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x"
+  }
+]

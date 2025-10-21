@@ -4,20 +4,71 @@ import sys
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
-        self.pos = 0 # current index in token list
+        self.pos = 0  # current index
+        self.symbols = set()  # to track declared identifiers
 
-    # Returns the next token, skips comments
+    # Return the current token
     def getNextToken(self):
-        pass # will implement later
+        if self.pos < len(self.tokens):
+            return self.tokens[self.pos]
+        return None
 
-    # Checks if a variable has already been declared
-    def identifierExists(self, identifier):
-        pass  # will implement later
+    # Advance to the next token
+    def scan(self):
+        if self.pos < len(self.tokens):
+            self.pos += 1
 
-    # Entry point; starts parsing by calling _start()
+    # Check if an identifier has already been declared
+    def identifierExists(self, name):
+        return name in self.symbols
+
+    # Entry point
     def begin(self):
-        pass  # will implement later
+        print("Parsing started...")
+        declarations = []
+        while self.pos < len(self.tokens):
+            decl_tree = self.parseDeclaration()
+            if decl_tree:
+                declarations.append(decl_tree)
+        print("Parse tree:")
+        for d in declarations:
+            print(d)
 
+    # Parse a single declaration: e.g., int x
+    def parseDeclaration(self):
+        token = self.getNextToken()
+        if token and token['type'] == 'KEYWORD':  # e.g., "int"
+            var_type = token['value']
+            self.scan()
+
+            token = self.getNextToken()
+            if token and token['type'] == 'IDENTIFIER':
+                var_name = token['value']
+
+                # Check if already declared
+                if self.identifierExists(var_name):
+                    print(f"Error: identifier '{var_name}' already declared")
+                    self.scan()
+                    return None
+
+                # Add to symbol table
+                self.symbols.add(var_name)
+                self.scan()
+                return ["DECLARATION", var_type, var_name]
+
+            else:
+                print("Error: expected identifier")
+                self.scan()  # <--- advance to avoid infinite loop
+                return None
+        else:
+            print("Error: expected type (e.g., int)")
+            self.scan()  # <--- advance to avoid infinite loop
+            return None
+
+
+# -------------------------
+# Main function
+# -------------------------
 def main():
     if len(sys.argv) < 2:
         print("Usage: python parser.py <tokens.json>")
@@ -25,7 +76,6 @@ def main():
 
     json_file = sys.argv[1]
 
-    #Read JSON File
     try:
         with open(json_file, "r", encoding="utf-8") as f:
             tokens = json.load(f)
@@ -36,14 +86,8 @@ def main():
         print(f"Error: File '{json_file}' is not valid JSON.")
         return
 
-
-    # Create parser object
     parser = Parser(tokens)
-
-    # For now, just print the tokens
-    print("Tokens loaded from JSON:")
-    for t in parser.tokens:
-        print(t)
+    parser.begin()
 
 if __name__ == "__main__":
     main()
