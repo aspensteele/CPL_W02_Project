@@ -1,12 +1,13 @@
+#!/usr/bin/env python3
 import json
 import sys
 
 
 class Parser:
     def __init__(self, tokens):
-        self.tokens = tokens #store tokens to parse
-        self.pos = 0        # current position in token list
-        self.symbols = set()
+        self.tokens = tokens  # store tokens to parse
+        self.pos = 0          # current position in token list
+        self.symbols = set()  # declared identifiers
 
     """In rubric: get the current token and advance to the next. NOTE: this will REMOVE the token from the list"""
     def nextToken(self):
@@ -15,6 +16,11 @@ class Parser:
             self.pos += 1
             return token
         return None
+
+    # rubric requires a public getNextToken that returns the next non-comment token
+    # our scanner already strips comments, so we forward to nextToken
+    def getNextToken(self):
+        return self.nextToken()
 
     """Look at current token. Does not advance or remove from list"""
     def peek(self):
@@ -26,16 +32,46 @@ class Parser:
     def identifierExists(self, name):
         return name in self.symbols
 
+    # helpers
+    def _expect_value(self, expected_val, ctx_msg):
+        t = self.nextToken()
+        if not t or t.get("value") != expected_val:
+
+            print(f"Error: expected {expected_val} in {ctx_msg}, got {t}")
+            return None
+        return t
+
+    def _expect_type(self, expected_type, ctx_msg):
+        t = self.nextToken()
+        if not t or t.get("type") != expected_type:
+            print(f"Error: expected {expected_type} in {ctx_msg}, got {t}")
+            return None
+        return t
+
     """main entry point for parsing"""
     def begin(self):
         print("Parsing started...")
-        tree = ["PROGRAM"]
-        while self.pos < len(self.tokens):
-            stmt_tree = self._statement()
-            if stmt_tree:
-                tree.append(stmt_tree)
+        tree = self._start()  # per rubric: begin calls start
         print("Parse tree:")
         print(json.dumps(tree, indent=2))
+        return tree
+
+    # start -> { Statement }
+    def _start(self):
+        tree = ["PROGRAM"]
+        while self.pos < len(self.tokens):
+            # stop if dangling or scanner appended sentinels we do not handle
+            node = self._statement()
+
+            if node:
+                tree.append(node)
+            else:
+                
+                # advance one token to avoid infinite loop on hard error
+                if self.peek():
+                    self.pos += 1
+                else:
+                    break
         return tree
 
     """acts as a dispatcher- figures out what kind of statement it is and calls the appropriate method"""
@@ -44,43 +80,52 @@ class Parser:
         if not token:
             return None
 
-        if token['type'] == 'KEYWORD' and token['value'] in ['int', 'float', 'char', 'bool', 'string']:
+        # Statement = Declaration | Assignment | IfStatement | WhileStatement
+        if token['type'] == 'KEYWORD' and token['value'] == 'int':
             return self._declaration()
-        elif token['type'] == 'IDENTIFIER':
+        if token['type'] == 'KEYWORD' and token['value'] == 'if':
+            return self._if_stmt()
+        if token['type'] == 'KEYWORD' and token['value'] == 'while':
+            return self._while_stmt()
+        if token['type'] == 'IDENTIFIER':
             return self._assignment()
-        elif token['value'] == 'if':
-            return self._if_stmt()  # Partner will implement this
-        elif token['value'] == 'while':
-            return self._while_stmt()  # Partner will implement this
-        else:
-            print(f"Unexpected token: {token}")
-            self.pos += 1
-            return None
 
-    """parses a variable declar statement. e.g. int x;"""
+        print(f"Unexpected token at statement start: {token}")
+        return None
+
+    """parses a variable declar statement. e.g. int x; or int x = 5;  grammar allows exactly one identifier"""
     def _declaration(self):
-        type_token = self.nextToken()
+        type_token = self.nextToken()  # 'int'
         var_type = type_token['value']
 
         ident_token = self.nextToken()
         if not ident_token or ident_token['type'] != 'IDENTIFIER':
-            print("Error: expected identifier")
+            print("Error: expected identifier after 'int'")
             return None
 
         var_name = ident_token['value']
-
         if self.identifierExists(var_name):
             print(f"Error: identifier '{var_name}' already declared")
             return None
 
-        self.symbols.add(var_name)
+        # optional initializer: '=' Expression
+        initializer = None
+        if self.peek() and self.peek()['type'] == 'OPERATOR' and self.peek()['value'] == '=':
+            self.nextToken()  # consume '='
+            initializer = self._expression()
+            if not initializer:
+                return None
 
         semi = self.nextToken()
         if not semi or semi['value'] != ';':
-            print(f"Error: expected ';', got {semi}")
+            print(f"Error: expected ';' after declaration, got {semi}")
             return None
 
-        return ["DECLARATION", var_type, var_name]
+        self.symbols.add(var_name)
+        if initializer is None:
+            return ["DECLARATION", var_type, var_name]
+        else:
+            return ["DECLARATION_INIT", var_type, var_name, initializer]
 
     """parse an assignment statement e.g. x = 10 + 5;"""
     def _assignment(self):
@@ -89,10 +134,14 @@ class Parser:
             print(f"Error: variable '{var_token['value']}' not declared")
             return None
 
+
+
+
         eq = self.nextToken()
         if not eq or eq['value'] != '=':
             print(f"Error: expected '=', got {eq}")
             return None
+
 
         expr_tree = self._expression()
         if not expr_tree:
@@ -107,14 +156,14 @@ class Parser:
 
     """parse an expression with low precedence operators, left to right, e.g. x + 5 - 2 becomes ((x+5) -2)"""
     def _expression(self):
-        """Parse expressions with binary operators meaning it requires 2 operands (+, -, *, /, ==, <, >)"""
+        """Parse expressions with binary operators meaning it requires 2 operands (+, -, *, /)"""
         left = self._term()
         if not left:
             return None
 
         while self.peek() and self.peek()['type'] == 'OPERATOR':
             op_token = self.peek()
-            if op_token['value'] in ['+', '-', '==', '<', '>']:
+            if op_token['value'] in ['+', '-']:
                 self.nextToken()
                 right = self._term()
                 if not right:
@@ -122,10 +171,12 @@ class Parser:
                     return None
                 left = ["BINOP", op_token['value'], left, right]
             else:
-                # Not a low precedence operator
                 break
 
         return left
+    
+
+
 
     def _term(self):
         """Parse multiplication and division (higher precedence)"""
@@ -137,13 +188,18 @@ class Parser:
             op_token = self.peek()
             if op_token['value'] in ['*', '/']:
                 self.nextToken()
+
                 right = self._factor()
+
+
                 if not right:
                     print("Error: expected expression after operator")
                     return None
                 left = ["BINOP", op_token['value'], left, right]
             else:
                 break
+
+
 
         return left
 
@@ -156,6 +212,7 @@ class Parser:
         if token['value'] == '(':
             self.nextToken()
             expr = self._expression()
+
             close_paren = self.nextToken()
             if not close_paren or close_paren['value'] != ')':
                 print(f"Error: expected ')', got {close_paren}")
@@ -167,6 +224,8 @@ class Parser:
             return ["INT", token['value']]
 
         if token['type'] == 'IDENTIFIER':
+
+
             if not self.identifierExists(token['value']):
                 print(f"Error: variable '{token['value']}' not declared")
                 return None
@@ -176,16 +235,117 @@ class Parser:
         print(f"Error: unexpected token in expression: {token}")
         return None
 
-    # TODO: implement methods below
+    # relational condition used by if and while
+    # Condition = Expression RelOp Expression ;  RelOp in < > ==
+    def _rel(self):
+        left = self._expression()
+        if not left:
+            return None
+
+        op = self.peek()
+        if not op or op['type'] != 'OPERATOR' or op['value'] not in ['==', '<', '>']:
+            print(f"Error: expected relational operator (==, <, >), got {op}")
+            return None
+        self.nextToken()
+
+        right = self._expression()
+        if not right:
+            return None
+
+        return ["RELOP", op['value'], left, right]
+
+    """Parse if statement: if (condition) { statements } [else { statements }]"""
     def _if_stmt(self):
-        """Parse if statement: if (condition) { statements } [else { statements }]"""
+        if_tok = self.nextToken()
+        if not if_tok or if_tok['type'] != 'KEYWORD' or if_tok['value'] != 'if':
 
+            print("Error: expected 'if'")
+            return None
+
+        lp = self.nextToken()
+        if not lp or lp['value'] != '(':
+            print(f"Error: expected '(', got {lp}")
+            return None
+
+        cond = self._rel()
+        if not cond:
+            return None
+
+        rp = self.nextToken()
+        if not rp or rp['value'] != ')':
+            print(f"Error: expected ')', got {rp}")
+
+            return None
+
+        then_block = self._block()
+        if not then_block:
+            return None
+
+        else_block = None
+        if self.peek() and self.peek()['type'] == 'KEYWORD' and self.peek()['value'] == 'else':
+            self.nextToken()
+            else_block = self._block()
+            if not else_block:
+                return None
+
+        return ["IF", cond, then_block, else_block]
+
+    """Parse while statement: while (condition) { statements }"""
     def _while_stmt(self):
-        """Parse while statement: while (condition) { statements }"""
+        w_tok = self.nextToken()
+        if not w_tok or w_tok['type'] != 'KEYWORD' or w_tok['value'] != 'while':
+            print("Error: expected 'while'")
 
+            return None
 
+        lp = self.nextToken()
+        if not lp or lp['value'] != '(':
+
+            print(f"Error: expected '(', got {lp}")
+            return None
+
+        cond = self._rel()
+        if not cond:
+            return None
+
+        rp = self.nextToken()
+        if not rp or rp['value'] != ')':
+
+            print(f"Error: expected ')', got {rp}")
+            return None
+
+        body = self._block()
+        if not body:
+            return None
+
+        return ["WHILE", cond, body]
+
+    """Parse a block of statements (inside braces). Note:  this grammar only permits blocks after if/while."""
     def _block(self):
-        """Parse a block of statements (inside braces)"""
+        lb = self.nextToken()
+        if not lb or lb['value'] != '{':
+            print(f"Error: expected '{{', got {lb}")
+            return None
+
+        items = []
+        while self.peek() and not (self.peek()['type'] == 'PUNCTUATION' and self.peek()['value'] == '}'):
+            node = self._statement()
+            if node:
+
+                items.append(node)
+            else:
+                # simple recovery advance one token to avoid infinite loop
+                if self.peek():
+                    self.pos += 1
+                else:
+                    break
+
+        rb = self.nextToken()
+        if not rb or rb['value'] != '}':
+            print(f"Error: expected '}}', got {rb}")
+            return None
+
+        return ["BLOCK", items]
 
 
 def main():
@@ -208,8 +368,6 @@ def main():
     parser = Parser(tokens)
     tree = parser.begin()
 
-
-    # save the parse tree as json file (?) rubric says parse tree
     output_file = json_file.replace('_tokens.json', '_parse_tree.json')
     try:
         with open(output_file, 'w', encoding='utf-8') as f:
