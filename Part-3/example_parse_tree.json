@@ -11,9 +11,30 @@
     "y"
   ],
   [
-    "DECLARATION",
+    "DECLARATION_INIT",
     "int",
-    "z"
+    "z",
+    [
+      "INT",
+      "5"
+    ]
+  ],
+  [
+    "DECLARATION_INIT",
+    "int",
+    "a",
+    [
+      "BINOP",
+      "*",
+      [
+        "INT",
+        "3"
+      ],
+      [
+        "INT",
+        "4"
+      ]
+    ]
   ],
   [
     "ASSIGNMENT",
@@ -60,6 +81,22 @@
       [
         "IDENTIFIER",
         "y"
+      ]
+    ]
+  ],
+  [
+    "ASSIGNMENT",
+    "a",
+    [
+      "BINOP",
+      "-",
+      [
+        "IDENTIFIER",
+        "z"
+      ],
+      [
+        "IDENTIFIER",
+        "x"
       ]
     ]
   ]

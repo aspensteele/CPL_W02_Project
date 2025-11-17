@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Executor {
     private JSONArray program;
-    private Map<String, Integer> memory;
+    private Map<String, Integer> memory;  // Symbol table: variable names → values
 
     public Executor(JSONArray program) {
         this.program = program;
@@ -28,27 +28,35 @@ public class Executor {
     }
 
     private void executeStatement(JSONArray stmt) {
-        String type = (String) stmt.get(0);
+        String type = (String) stmt.get(0);  // Position 0: statement type
 
         if (type.equals("DECLARATION")) {
-            // ["DECLARATION", "int", "varname"] ex. int x
-            String varName = (String) stmt.get(2);
+            // ["DECLARATION", "int", "varname"] ex. int x;
+            String varName = (String) stmt.get(2);  // Position 2: variable name
             memory.put(varName, 0);
             System.out.println("Declared " + varName + " = 0");
         }
         else if (type.equals("DECLARATION_INIT")) {
-            // TODO: Implement ex . int x = 3
-            System.out.println("TODO: Execute " + type);
+            // ["DECLARATION_INIT", "int", "varname", expression] ex. int x = 5;
+            String varName = (String) stmt.get(2);  // Position 2: variable name
+            int value = evaluateExpression((JSONArray) stmt.get(3));  // Position 3: expression
+            memory.put(varName, value);
+            System.out.println("Declared " + varName + " = " + value);
         }
         else if (type.equals("ASSIGNMENT")) {
-            // TODO: Implement
-            System.out.println("TODO: Execute " + type);
+            // ["ASSIGNMENT", "varname", expression] ex. x = 10;
+            String varName = (String) stmt.get(1);
+            int value = evaluateExpression((JSONArray) stmt.get(2));
+            memory.put(varName,value);
+            System.out.println("Assigned: " + varName + " = " + value);
         }
         else if (type.equals("IF")) {
+            // ["IF", condition, then_block, else_block]
             // TODO: Implement
             System.out.println("TODO: Execute " + type);
         }
         else if (type.equals("WHILE")) {
+            // ["WHILE", condition, body_block]
             // TODO: Implement
             System.out.println("TODO: Execute " + type);
         }
@@ -58,19 +66,39 @@ public class Executor {
     }
 
     private void executeBlock(JSONArray block) {
-        // TODO: Execute each statement in the block
         // ["BLOCK", [statement1, statement2, ...]]
+        // TODO: Execute each statement in the block
     }
 
     private int evaluateExpression(JSONArray expr) {
-        // TODO: Evaluate expressions
-        // Handle: INT, IDENTIFIER, BINOP
+        String type = (String) expr.get(0);  // Position 0: expression type
+
+        if (type.equals("INT")){
+            // ["INT", "value"] - Position 1: string number → parse to int
+            return Integer.parseInt((String) expr.get(1));
+        }
+        else if (type.equals("IDENTIFIER")){
+            // ["IDENTIFIER", "varname"] - Position 1: variable name → lookup in memory
+            String varName = (String) expr.get(1);
+            return memory.get(varName);
+        }
+        else if (type.equals("BINOP")){
+            // ["BINOP", "operator", left_expr, right_expr]
+            String op = (String) expr.get(1);  // Position 1: operator
+            int left = evaluateExpression((JSONArray) expr.get(2));  // Position 2: left (recursive)
+            int right = evaluateExpression((JSONArray) expr.get(3));  // Position 3: right (recursive)
+
+            if (op.equals("+")) return left + right;
+            if (op.equals("-")) return left - right;
+            if (op.equals("*")) return left * right;
+            if (op.equals("/")) return left / right;
+        }
         return 0;
     }
 
     private boolean evaluateCondition(JSONArray cond) {
-        // TODO: Evaluate conditions
-        // Handle: RELOP (==, <, >)
+        // ["RELOP", "operator", left_expr, right_expr]
+        // TODO: Evaluate conditions - Handle: RELOP (==, <, >)
         return false;
     }
 
