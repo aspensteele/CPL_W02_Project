@@ -29,14 +29,32 @@ public class Executor {
 
     private void executeStatement(JSONArray stmt) {
         String type = (String) stmt.get(0);
-        System.out.println("TODO: Execute " + type);
 
-        // TODO: Add if-else for each statement type
-        // if (type.equals("DECLARATION")) { ... }
-        // else if (type.equals("DECLARATION_INIT")) { ... }
-        // else if (type.equals("ASSIGNMENT")) { ... }
-        // else if (type.equals("IF")) { ... }
-        // else if (type.equals("WHILE")) { ... }
+        if (type.equals("DECLARATION")) {
+            // ["DECLARATION", "int", "varname"] ex. int x
+            String varName = (String) stmt.get(2);
+            memory.put(varName, 0);
+            System.out.println("Declared " + varName + " = 0");
+        }
+        else if (type.equals("DECLARATION_INIT")) {
+            // TODO: Implement ex . int x = 3
+            System.out.println("TODO: Execute " + type);
+        }
+        else if (type.equals("ASSIGNMENT")) {
+            // TODO: Implement
+            System.out.println("TODO: Execute " + type);
+        }
+        else if (type.equals("IF")) {
+            // TODO: Implement
+            System.out.println("TODO: Execute " + type);
+        }
+        else if (type.equals("WHILE")) {
+            // TODO: Implement
+            System.out.println("TODO: Execute " + type);
+        }
+        else {
+            System.out.println("Unknown statement type: " + type);
+        }
     }
 
     private void executeBlock(JSONArray block) {
