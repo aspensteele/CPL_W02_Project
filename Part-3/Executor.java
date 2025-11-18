@@ -98,8 +98,20 @@ public class Executor {
 
     private boolean evaluateCondition(JSONArray cond) {
         // ["RELOP", "operator", left_expr, right_expr]
-        // TODO: Evaluate conditions - Handle: RELOP (==, <, >)
-        return false;
+        String op = (String) cond.get(1);
+        int left = evaluateExpression((JSONArray) cond.get(2));
+        int right = evaluateExpression((JSONArray) cond.get(3));
+
+        if (op.equals("==")) return left == right;
+        if (op.equals("!=")) return left != right;
+        if (op.equals(">")) return left > right;
+        if (op.equals(">=")) return left >= right;
+        if (op.equals("<")) return left < right;
+        if (op.equals("<=")) return left <= right;
+
+        else {
+            return false;
+        }
     }
 
     public static void main(String[] args) throws Exception {

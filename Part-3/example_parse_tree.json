@@ -6,14 +6,9 @@
     "x"
   ],
   [
-    "DECLARATION",
-    "int",
-    "y"
-  ],
-  [
     "DECLARATION_INIT",
     "int",
-    "z",
+    "y",
     [
       "INT",
       "5"
@@ -22,17 +17,25 @@
   [
     "DECLARATION_INIT",
     "int",
-    "a",
+    "z",
     [
       "BINOP",
-      "*",
+      "+",
       [
-        "INT",
-        "3"
+        "IDENTIFIER",
+        "x"
       ],
       [
-        "INT",
-        "4"
+        "BINOP",
+        "*",
+        [
+          "IDENTIFIER",
+          "y"
+        ],
+        [
+          "INT",
+          "2"
+        ]
       ]
     ]
   ],
@@ -49,14 +52,22 @@
     "y",
     [
       "BINOP",
-      "+",
+      "-",
       [
-        "IDENTIFIER",
-        "x"
+        "BINOP",
+        "+",
+        [
+          "IDENTIFIER",
+          "x"
+        ],
+        [
+          "INT",
+          "3"
+        ]
       ],
       [
         "INT",
-        "5"
+        "2"
       ]
     ]
   ],
@@ -65,38 +76,168 @@
     "z",
     [
       "BINOP",
-      "+",
+      "*",
       [
         "BINOP",
-        "*",
+        "+",
         [
           "IDENTIFIER",
           "x"
         ],
         [
-          "INT",
-          "2"
+          "IDENTIFIER",
+          "y"
         ]
+      ],
+      [
+        "INT",
+        "2"
+      ]
+    ]
+  ],
+  [
+    "IF",
+    [
+      "RELOP",
+      ">",
+      [
+        "IDENTIFIER",
+        "x"
       ],
       [
         "IDENTIFIER",
         "y"
       ]
+    ],
+    [
+      "BLOCK",
+      [
+        [
+          "ASSIGNMENT",
+          "z",
+          [
+            "BINOP",
+            "+",
+            [
+              "IDENTIFIER",
+              "z"
+            ],
+            [
+              "INT",
+              "1"
+            ]
+          ]
+        ]
+      ]
+    ],
+    [
+      "BLOCK",
+      [
+        [
+          "ASSIGNMENT",
+          "z",
+          [
+            "BINOP",
+            "-",
+            [
+              "IDENTIFIER",
+              "z"
+            ],
+            [
+              "INT",
+              "1"
+            ]
+          ]
+        ]
+      ]
     ]
   ],
   [
-    "ASSIGNMENT",
-    "a",
+    "WHILE",
     [
-      "BINOP",
-      "-",
+      "RELOP",
+      "<",
       [
         "IDENTIFIER",
         "z"
       ],
       [
-        "IDENTIFIER",
-        "x"
+        "INT",
+        "20"
+      ]
+    ],
+    [
+      "BLOCK",
+      [
+        [
+          "ASSIGNMENT",
+          "x",
+          [
+            "BINOP",
+            "+",
+            [
+              "IDENTIFIER",
+              "x"
+            ],
+            [
+              "INT",
+              "1"
+            ]
+          ]
+        ],
+        [
+          "ASSIGNMENT",
+          "y",
+          [
+            "BINOP",
+            "+",
+            [
+              "IDENTIFIER",
+              "y"
+            ],
+            [
+              "INT",
+              "2"
+            ]
+          ]
+        ],
+        [
+          "IF",
+          [
+            "RELOP",
+            "==",
+            [
+              "IDENTIFIER",
+              "x"
+            ],
+            [
+              "IDENTIFIER",
+              "y"
+            ]
+          ],
+          [
+            "BLOCK",
+            [
+              [
+                "ASSIGNMENT",
+                "z",
+                [
+                  "BINOP",
+                  "+",
+                  [
+                    "IDENTIFIER",
+                    "z"
+                  ],
+                  [
+                    "INT",
+                    "5"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          null
+        ]
       ]
     ]
   ]
