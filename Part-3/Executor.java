@@ -52,12 +52,13 @@ public class Executor {
         }
         else if (type.equals("IF")) {
             // ["IF", condition, then_block, else_block]
-            // TODO: Implement
+            // TODO
             System.out.println("TODO: Execute " + type);
         }
         else if (type.equals("WHILE")) {
             // ["WHILE", condition, body_block]
-            // TODO: Implement
+            // TODO
+
             System.out.println("TODO: Execute " + type);
         }
         else {
@@ -67,7 +68,7 @@ public class Executor {
 
     private void executeBlock(JSONArray block) {
         // ["BLOCK", [statement1, statement2, ...]]
-        // TODO: Execute each statement in the block
+        // TODO
     }
 
     private int evaluateExpression(JSONArray expr) {
@@ -109,9 +110,7 @@ public class Executor {
         if (op.equals("<")) return left < right;
         if (op.equals("<=")) return left <= right;
 
-        else {
-            return false;
-        }
+        return false;
     }
 
     public static void main(String[] args) throws Exception {
