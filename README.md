@@ -18,7 +18,7 @@ Executor (Java) → Runs the program
 
 Converts .scl source → *_tokens.json
 
-python scl_scanner.py example.scl
+```python scl_scanner.py example.scl```
 
 2. Parser (Python)
 
