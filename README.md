@@ -1,8 +1,8 @@
-#CPL_W02_Project
+# CPL_W02_Project
 
 Interpreter for a subset of the SCL (System Control Language) used in CS4308: Concepts of Programming Languages.
 
-##Created by:
+## Created by:
 Colin Haskins, Shamitha John, Aspen Steele, Aashna Suthar
 
 ##Project Overview
@@ -13,7 +13,7 @@ Scanner (Python) → Token JSON
 Parser (Python) → Parse Tree JSON
 Executor (Java) → Runs the program
 
-###How to Run
+### How to Run
 1. Scanner (Python)
 
 Converts .scl source → *_tokens.json
@@ -31,7 +31,7 @@ python parser.py example_tokens.json
 Runs the parse tree and creates an automatic output file
 (e.g., example_parse_tree_output.txt)
 
-###Compile:
+### Compile:
 
 javac -cp .;json-simple-1.1.1.jar Executor.java
 
@@ -51,7 +51,7 @@ if (x > 10) {
     y = y - 1;
 }
 
-###What Each Component Supports
+### What Each Component Supports
 
 Scanner: integers, identifiers, keywords (int, if, else, while), operators
 Parser: declarations, assignments, if/else, while, expressions
