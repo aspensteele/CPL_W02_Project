@@ -5,7 +5,7 @@ Interpreter for a subset of the SCL (System Control Language) used in CS4308: Co
 ## Created by:
 Colin Haskins, Shamitha John, Aspen Steele, Aashna Suthar
 
-##Project Overview
+## Project Overview
 
 This project implements a simple end-to-end interpreter:
 
