@@ -24,23 +24,25 @@ Converts .scl source → *_tokens.json
 
 Converts token JSON → *_parse_tree.json
 
-python parser.py example_tokens.json
+```python parser.py example_tokens.json```
 
 3. Executor (Java)
+   Note: Will need to download the json-simple-1.1.1.jar file
 
 Runs the parse tree and creates an automatic output file
 (e.g., example_parse_tree_output.txt)
 
 ### Compile:
 
-javac -cp .;json-simple-1.1.1.jar Executor.java
+```javac -cp .;json-simple-1.1.1.jar Executor.java```
 
 
 Run:
 
-java -cp .;json-simple-1.1.1.jar Executor example_parse_tree.json
+```java -cp .;json-simple-1.1.1.jar Executor example_parse_tree.json```
 
 Example SCL Program
+```
 int x = 5;
 int y = 10;
 x = x + y;
@@ -50,6 +52,7 @@ if (x > 10) {
 } else {
     y = y - 1;
 }
+```
 
 ### What Each Component Supports
 
