@@ -1,0 +1,170 @@
+import org.json.simple.*;
+import org.json.simple.parser.*;
+import java.io.*;
+import java.util.*;
+
+public class Executor {
+    private JSONArray program;
+    private Map<String, Integer> memory;  // Symbol table: variable names → values
+    private PrintWriter outputWriter;  // For writing to file
+
+    public Executor(JSONArray program, PrintWriter outputWriter) {
+        this.program = program;
+        this.memory = new HashMap<>();
+        this.outputWriter = outputWriter;
+    }
+
+    private void log(String message) {
+        System.out.println(message);
+        if (outputWriter != null) {
+            outputWriter.println(message);
+        }
+    }
+
+    public void execute() {
+        log("Execution started...");
+
+        // Skip element 0 which is "PROGRAM"
+        for (int i = 1; i < program.size(); i++) {
+            executeStatement((JSONArray) program.get(i));
+        }
+
+        log("\nExecution completed.");
+        log("\nFinal memory state:");
+        for (String var : memory.keySet()) {
+            log("  " + var + " = " + memory.get(var));
+        }
+    }
+
+    private void executeStatement(JSONArray stmt) {
+        String type = (String) stmt.get(0);  // Position 0: statement type
+
+        if (type.equals("DECLARATION")) {
+            // ["DECLARATION", "int", "varname"] ex. int x;
+            String varName = (String) stmt.get(2);  // Position 2: variable name
+            memory.put(varName, 0);
+            log("Declared " + varName + " = 0");
+        }
+        else if (type.equals("DECLARATION_INIT")) {
+            // ["DECLARATION_INIT", "int", "varname", expression] ex. int x = 5;
+            String varName = (String) stmt.get(2);  // Position 2: variable name
+            int value = evaluateExpression((JSONArray) stmt.get(3));  // Position 3: expression
+            memory.put(varName, value);
+            log("Declared " + varName + " = " + value);
+        }
+        else if (type.equals("ASSIGNMENT")) {
+            // ["ASSIGNMENT", "varname", expression] ex. x = 10;
+            String varName = (String) stmt.get(1);
+            int value = evaluateExpression((JSONArray) stmt.get(2));
+            memory.put(varName,value);
+            log("Assigned: " + varName + " = " + value);
+        }
+        else if (type.equals("IF")) {
+            // ["IF", condition, then_block, else_block]
+            JSONArray condition = (JSONArray) stmt.get(1);
+            JSONArray thenBlock = (JSONArray) stmt.get(2);
+            Object elsePart = stmt.get(3);
+
+            if (evaluateCondition(condition)) {
+                executeBlock(thenBlock);
+            } else if (elsePart != null) {
+                executeBlock((JSONArray) elsePart);
+            }
+        }
+        else if (type.equals("WHILE")) {
+            // ["WHILE", condition, body_block]
+            JSONArray condition = (JSONArray) stmt.get(1);
+            JSONArray bodyBlock = (JSONArray) stmt.get(2);
+
+            while (evaluateCondition(condition)) {
+                executeBlock(bodyBlock);
+            }
+        }
+        else {
+            log("Unknown statement type: " + type);
+        }
+    }
+
+    private void executeBlock(JSONArray block) {
+        // ["BLOCK", [statement1, statement2, ...]]
+        JSONArray statements = (JSONArray) block.get(1);
+
+        for (Object s : statements) {
+            executeStatement((JSONArray) s);
+        }
+    }
+
+    private int evaluateExpression(JSONArray expr) {
+        String type = (String) expr.get(0);  // Position 0: expression type
+
+        if (type.equals("INT")){
+            // ["INT", "value"] - Position 1: string number → parse to int
+            return Integer.parseInt((String) expr.get(1));
+        }
+        else if (type.equals("IDENTIFIER")){
+            // ["IDENTIFIER", "varname"] - Position 1: variable name → lookup in memory
+            String varName = (String) expr.get(1);
+            return memory.get(varName);
+        }
+        else if (type.equals("BINOP")){
+            // ["BINOP", "operator", left_expr, right_expr]
+            String op = (String) expr.get(1);  // Position 1: operator
+            int left = evaluateExpression((JSONArray) expr.get(2));  // Position 2: left (recursive)
+            int right = evaluateExpression((JSONArray) expr.get(3));  // Position 3: right (recursive)
+
+            if (op.equals("+")) return left + right;
+            if (op.equals("-")) return left - right;
+            if (op.equals("*")) return left * right;
+            if (op.equals("/")) return left / right;
+        }
+        return 0;
+    }
+
+    private boolean evaluateCondition(JSONArray cond) {
+        // ["RELOP", "operator", left_expr, right_expr]
+        String op = (String) cond.get(1);
+        int left = evaluateExpression((JSONArray) cond.get(2));
+        int right = evaluateExpression((JSONArray) cond.get(3));
+
+        if (op.equals("==")) return left == right;
+        if (op.equals("!=")) return left != right;
+        if (op.equals(">")) return left > right;
+        if (op.equals(">=")) return left >= right;
+        if (op.equals("<")) return left < right;
+        if (op.equals("<=")) return left <= right;
+
+        return false;
+    }
+
+    public static void main(String[] args) throws Exception {
+        if (args.length < 1) {
+            System.out.println("Usage: java Executor <parse_tree.json> [output.txt]");
+            return;
+        }
+
+        System.out.println("Reading file: " + args[0]);
+
+        JSONParser parser = new JSONParser();
+        FileReader reader = new FileReader(args[0]);
+        JSONArray parseTree = (JSONArray) parser.parse(reader);
+        reader.close();
+
+        System.out.println("Parse tree loaded successfully!\n");
+
+        // Set up output file if provided
+        PrintWriter outputWriter = null;
+        if (args.length >= 2) {
+            outputWriter = new PrintWriter(new FileWriter(args[1]));
+            System.out.println("Output will be written to: " + args[1] + "\n");
+        }
+
+        Executor executor = new Executor(parseTree, outputWriter);
+        executor.execute();
+
+        // Close output file
+        if (outputWriter != null) {
+            outputWriter.close();
+            System.out.println("\nOutput written to: " + args[1]);
+        }
+    }
+}
