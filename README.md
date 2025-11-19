@@ -41,6 +41,9 @@ Run:
 
 ```java -cp .;json-simple-1.1.1.jar Executor example_parse_tree.json```
 
+To run with output to a file:
+```java -cp .;json-simple-1.1.1.jar Executor example_parse_tree.json name_of_output.txt```
+
 Example SCL Program
 ```
 int x = 5;
