@@ -1,0 +1,15 @@
+Execution started...
+Declared x = 0
+Declared y = 5
+Declared z = 10
+Assigned: x = 10
+Assigned: y = 11
+Assigned: z = 42
+Assigned: z = 41
+
+Execution completed.
+
+Final memory state:
+  x = 10
+  y = 11
+  z = 41

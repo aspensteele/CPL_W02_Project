@@ -6,24 +6,33 @@ import java.util.*;
 public class Executor {
     private JSONArray program;
     private Map<String, Integer> memory;  // Symbol table: variable names → values
+    private PrintWriter outputWriter;  // For writing to file
 
-    public Executor(JSONArray program) {
+    public Executor(JSONArray program, PrintWriter outputWriter) {
         this.program = program;
         this.memory = new HashMap<>();
+        this.outputWriter = outputWriter;
+    }
+
+    private void log(String message) {
+        System.out.println(message);
+        if (outputWriter != null) {
+            outputWriter.println(message);
+        }
     }
 
     public void execute() {
-        System.out.println("Execution started...");
+        log("Execution started...");
 
         // Skip element 0 which is "PROGRAM"
         for (int i = 1; i < program.size(); i++) {
             executeStatement((JSONArray) program.get(i));
         }
 
-        System.out.println("\nExecution completed.");
-        System.out.println("\nFinal memory state:");
+        log("\nExecution completed.");
+        log("\nFinal memory state:");
         for (String var : memory.keySet()) {
-            System.out.println("  " + var + " = " + memory.get(var));
+            log("  " + var + " = " + memory.get(var));
         }
     }
 
@@ -34,21 +43,21 @@ public class Executor {
             // ["DECLARATION", "int", "varname"] ex. int x;
             String varName = (String) stmt.get(2);  // Position 2: variable name
             memory.put(varName, 0);
-            System.out.println("Declared " + varName + " = 0");
+            log("Declared " + varName + " = 0");
         }
         else if (type.equals("DECLARATION_INIT")) {
             // ["DECLARATION_INIT", "int", "varname", expression] ex. int x = 5;
             String varName = (String) stmt.get(2);  // Position 2: variable name
             int value = evaluateExpression((JSONArray) stmt.get(3));  // Position 3: expression
             memory.put(varName, value);
-            System.out.println("Declared " + varName + " = " + value);
+            log("Declared " + varName + " = " + value);
         }
         else if (type.equals("ASSIGNMENT")) {
             // ["ASSIGNMENT", "varname", expression] ex. x = 10;
             String varName = (String) stmt.get(1);
             int value = evaluateExpression((JSONArray) stmt.get(2));
             memory.put(varName,value);
-            System.out.println("Assigned: " + varName + " = " + value);
+            log("Assigned: " + varName + " = " + value);
         }
         else if (type.equals("IF")) {
             // ["IF", condition, then_block, else_block]
@@ -72,7 +81,7 @@ public class Executor {
             }
         }
         else {
-            System.out.println("Unknown statement type: " + type);
+            log("Unknown statement type: " + type);
         }
     }
 
@@ -129,7 +138,7 @@ public class Executor {
 
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
-            System.out.println("Usage: java Executor <parse_tree.json>");
+            System.out.println("Usage: java Executor <parse_tree.json> [output.txt]");
             return;
         }
 
@@ -142,7 +151,20 @@ public class Executor {
 
         System.out.println("Parse tree loaded successfully!\n");
 
-        Executor executor = new Executor(parseTree);
+        // Set up output file if provided
+        PrintWriter outputWriter = null;
+        if (args.length >= 2) {
+            outputWriter = new PrintWriter(new FileWriter(args[1]));
+            System.out.println("Output will be written to: " + args[1] + "\n");
+        }
+
+        Executor executor = new Executor(parseTree, outputWriter);
         executor.execute();
+
+        // Close output file
+        if (outputWriter != null) {
+            outputWriter.close();
+            System.out.println("\nOutput written to: " + args[1]);
+        }
     }
 }
