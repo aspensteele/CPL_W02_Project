@@ -53,13 +53,27 @@ public class Executor {
         else if (type.equals("IF")) {
             // ["IF", condition, then_block, else_block]
             // TODO
-            System.out.println("TODO: Execute " + type);
+            // parse tree layout is tag condition then block else block
+            JSONArray condition = (JSONArray) stmt.get(1);
+            JSONArray thenBlock = (JSONArray) stmt.get(2);
+            Object elsePart = stmt.get(3);
+            // if condition is true execute then block
+            if (evaluateCondition(condition)) {
+                executeBlock(thenBlock);
+            } else if (elsePart != null) {
+                // if condition is false and else block exists execute else block
+                executeBlock((JSONArray) elsePart);
+            }
         }
         else if (type.equals("WHILE")) {
             // ["WHILE", condition, body_block]
             // TODO
-
-            System.out.println("TODO: Execute " + type);
+            // repeatedly execute body block while condition remains true
+            JSONArray condition = (JSONArray) stmt.get(1);
+            JSONArray bodyBlock = (JSONArray) stmt.get(2);
+            while (evaluateCondition(condition)) {
+                executeBlock(bodyBlock);
+            }
         }
         else {
             System.out.println("Unknown statement type: " + type);
@@ -69,6 +83,12 @@ public class Executor {
     private void executeBlock(JSONArray block) {
         // ["BLOCK", [statement1, statement2, ...]]
         // TODO
+        // get list of child statements from index one
+        JSONArray statements = (JSONArray) block.get(1);
+        // execute each child statement in order
+        for (Object s : statements) {
+            executeStatement((JSONArray) s);
+        }
     }
 
     private int evaluateExpression(JSONArray expr) {
